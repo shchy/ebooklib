@@ -247,7 +247,7 @@ class EpubHtml(EpubItem):
     _template_name = 'chapter'
 
     def __init__(self, uid=None, file_name='', media_type='', content=None, title='',
-                 lang=None, direction=None, media_overlay=None, media_duration=None):
+                 lang=None, direction=None, media_overlay=None, media_duration=None, viewport=''):
         super(EpubHtml, self).__init__(uid, file_name, media_type, content)
 
         self.title = title
@@ -258,6 +258,7 @@ class EpubHtml(EpubItem):
         self.media_duration = media_duration
 
         self.links = []
+        self.viewport = viewport
         self.properties = []
         self.pages = []
 
@@ -423,6 +424,11 @@ class EpubHtml(EpubItem):
         #         _head.append(i)
 
         # create and populate body
+
+        if self.viewport != '':
+            meta = etree.SubElement(_head, 'meta')
+            meta.set('name', 'viewport')
+            meta.set('content', self.viewport)
 
         _body = etree.SubElement(tree_root, 'body')
         if self.direction:
