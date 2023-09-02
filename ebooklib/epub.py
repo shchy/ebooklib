@@ -247,7 +247,8 @@ class EpubHtml(EpubItem):
     _template_name = 'chapter'
 
     def __init__(self, uid=None, file_name='', media_type='', content=None, title='',
-                 lang=None, direction=None, media_overlay=None, media_duration=None, viewport=''):
+                 lang=None, direction=None, media_overlay=None, media_duration=None, 
+                 viewport='', page_spread=None):
         super(EpubHtml, self).__init__(uid, file_name, media_type, content)
 
         self.title = title
@@ -259,6 +260,7 @@ class EpubHtml(EpubItem):
 
         self.links = []
         self.viewport = viewport
+        self.page_spread = page_spread
         self.properties = []
         self.pages = []
 
@@ -1037,6 +1039,9 @@ class EpubWriter(object):
 
                 if not item.is_linear or not is_linear:
                     opts['linear'] = 'no'
+
+                if item.page_spread:
+                    opts['properties'] = item.page_spread
             elif isinstance(item, EpubItem):
                 opts = {'idref': item.get_id()}
 
